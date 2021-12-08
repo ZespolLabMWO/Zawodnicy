@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zawodnicy.Core.Domain;
@@ -9,12 +10,28 @@ namespace Zawodnicy.Infrastructure.Repositories
 {
     class CitiesRepository : ICitiesRepository
     {
-        public Task AddSync(City c)
+        private AppDbContext _appDbContext;
+
+        public CitiesRepository(AppDbContext appDbContext)
         {
-            throw new NotImplementedException();
+            _appDbContext = appDbContext;
         }
 
-        public Task<IEnumerable<City>> BrowseAllAsync()
+        public async Task AddSync(City c)
+        {
+            try
+            {
+                _appDbContext.City.Add(c);
+                _appDbContext.SaveChanges();
+                await Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                await Task.FromException(ex);
+            } 
+        }
+
+    public Task<IEnumerable<City>> BrowseAllAsync()
         {
             throw new NotImplementedException();
         }
