@@ -9,9 +9,12 @@ namespace Zawodnicy.Infrastructure.Repositories
 {
     class CouchesRepository : ICoachesRepository
     {
-        public Task AddSync(Coach c)
+        public static List<Coach> _CoachMock = new List<Coach>();
+
+        public async Task AddSync(Coach c)
         {
-            throw new NotImplementedException();
+            _CoachMock.Add(c);
+            await Task.CompletedTask;
         }
 
         public Task<IEnumerable<Coach>> BrowseAllAsync()
@@ -29,9 +32,15 @@ namespace Zawodnicy.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(Coach c)
+        public async Task UpdateAsync(Coach c)
         {
-            throw new NotImplementedException();
+            int idx = _CoachMock.FindIndex(x => x.Id == c.Id);
+
+            if (idx != -1)
+            {
+                _CoachMock[idx] = c;
+            }
+            await Task.CompletedTask;
         }
     }
 }
