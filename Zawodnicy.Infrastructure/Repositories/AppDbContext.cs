@@ -13,8 +13,10 @@ namespace Zawodnicy.Infrastructure.Repositories
 
         }
 
+        public DbSet<City> City { get; set; } //dla pozostalych klas to samo
+
         public DbSet<SkiJumper> SkiJumper { get; set; } //dla pozostalych klas to samo
 
-        public DbSet<City> City { get; set; }
+    
     }
 }
