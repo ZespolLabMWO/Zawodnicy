@@ -9,7 +9,7 @@ namespace Zawodnicy.Core.Repository
     public interface ICitiesRepository
     {
         Task UpdateAsync(City c);
-        Task AddSync(City c);
+        Task AddAsync(City c);
         Task DelAsync(City c);
         Task<City> GetAsync(int id);
         Task<IEnumerable<City>> BrowseAllAsync();

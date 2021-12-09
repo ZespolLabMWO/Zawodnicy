@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zawodnicy.Core.Domain;
@@ -9,29 +10,54 @@ namespace Zawodnicy.Infrastructure.Repositories
 {
     class CitiesRepository : ICitiesRepository
     {
-        public Task AddSync(City c)
+        //private AppDbContext _appDbContext;
+
+        //Sprawdzanie poprawności dodawanych miast leży po stronie service
+
+        private List<City> _citiesMock = new List<City>();
+
+        public async Task AddAsync(City c)
         {
-            throw new NotImplementedException();
+            int index = _citiesMock.FindIndex(item => item.Id == c.Id);
+            if (index < 0 && c.Id > 0)
+            {
+                _citiesMock.Add(c);
+            }
+            await Task.CompletedTask;
         }
 
-        public Task<IEnumerable<City>> BrowseAllAsync()
+        public async Task<IEnumerable<City>> BrowseAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_citiesMock);
         }
 
-        public Task DelAsync(City c)
+        public async Task DelAsync(City c)
         {
-            throw new NotImplementedException();
+            int index = _citiesMock.FindIndex(item => item.Id == c.Id);
+            if(index >= 0)
+            {
+                _citiesMock.RemoveAt(index);
+            }
+            await Task.CompletedTask;
         }
 
-        public Task<City> GetAsync(int id)
+        public async Task<City> GetAsync(int id)
         {
-            throw new NotImplementedException();
+
+            return await Task.FromResult(_citiesMock.Find(item => item.Id == id));
+
         }
 
-        public Task UpdateAsync(City c)
+        public async Task UpdateAsync(City c)
         {
-            throw new NotImplementedException();
+            //Dodanie update async
+            int index = _citiesMock.FindIndex(item => item.Id == c.Id);
+            if(index >= 0)
+            {
+                _citiesMock[index] = c;
+            }
+
+            await Task.CompletedTask;
         }
     }
 }
