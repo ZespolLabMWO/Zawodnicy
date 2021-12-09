@@ -24,7 +24,10 @@ namespace Zawodnicy.Infrastructure.Repositories
 
         public Task DelAsync(Coach c)
         {
-            throw new NotImplementedException();
+           if(_CoachMock.Remove(c))
+            {
+                await Task.CompletedTask;
+            }
         }
 
         public Task<Coach> GetAsync(int id)
