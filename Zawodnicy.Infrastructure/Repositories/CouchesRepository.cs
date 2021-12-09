@@ -17,22 +17,24 @@ namespace Zawodnicy.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
-        public Task<IEnumerable<Coach>> BrowseAllAsync()
+        public async Task<IEnumerable<Coach>> BrowseAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_CoachMock);
         }
 
-        public Task DelAsync(Coach c)
+        public async Task DelAsync(Coach c)
         {
-           if(_CoachMock.Remove(c))
+            int x = _CoachMock.FindIndex(x => x.Id == c.Id);
+            if(x!=-1)
             {
-                await Task.CompletedTask;
+                _CoachMock.RemoveAt(x);
             }
+            await Task.CompletedTask;
         }
 
-        public Task<Coach> GetAsync(int id)
+        public async Task<Coach> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_CoachMock.Find(x => x.Id == id));
         }
 
         public async Task UpdateAsync(Coach c)
