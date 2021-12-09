@@ -19,16 +19,11 @@ namespace Zawodnicy.Infrastructure.Repositories
         public async Task AddAsync(City c)
         {
             int index = _citiesMock.FindIndex(item => item.Id == c.Id);
-            if (index >= 0 || c.Id < 0)
-            {
-                return;
-            }
-            else
+            if (index < 0 && c.Id > 0)
             {
                 _citiesMock.Add(c);
-                await Task.CompletedTask;
             }
-
+            await Task.CompletedTask;
         }
 
         public async Task<IEnumerable<City>> BrowseAllAsync()
@@ -42,8 +37,8 @@ namespace Zawodnicy.Infrastructure.Repositories
             if(index >= 0)
             {
                 _citiesMock.RemoveAt(index);
-                await Task.CompletedTask;
             }
+            await Task.CompletedTask;
         }
 
         public async Task<City> GetAsync(int id)
