@@ -43,20 +43,14 @@ namespace Zawodnicy.Infrastructure.Repositories
 
         public async Task<City> GetAsync(int id)
         {
-            int index = _citiesMock.FindIndex(item => item.Id == id);
-            if(index >= 0)
-            {
-                return await Task.FromResult(_citiesMock[index]);
-            }
-            else
-            {
-                return null;
-            }
+
+            return await Task.FromResult(_citiesMock.Find(item => item.Id == id));
 
         }
 
         public Task UpdateAsync(City c)
         {
+            //Dodanie update async
             throw new NotImplementedException();
         }
     }
