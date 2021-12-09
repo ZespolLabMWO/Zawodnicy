@@ -10,49 +10,54 @@ namespace Zawodnicy.Infrastructure.Repositories
 {
     class CitiesRepository : ICitiesRepository
     {
-        private AppDbContext _appDbContext;
+        //private AppDbContext _appDbContext;
 
-        public CitiesRepository(AppDbContext appDbContext)
-        {
-            _appDbContext = appDbContext;
-        }
+        //Sprawdzanie poprawności dodawanych miast leży po stronie service
 
-        public async Task AddSync(City c)
+        private List<City> _citiesMock = new List<City>();
+
+        public async Task AddAsync(City c)
         {
-            try
+            int index = _citiesMock.FindIndex(item => item.Id == c.Id);
+            if (index >= 0 || c.Id < 0)
             {
-                _appDbContext.City.Add(c);
-                _appDbContext.SaveChanges();
+                return;
+            }
+            else
+            {
+                _citiesMock.Add(c);
                 await Task.CompletedTask;
             }
-            catch (Exception ex)
+
+        }
+
+        public async Task<IEnumerable<City>> BrowseAllAsync()
+        {
+            return await Task.FromResult(_citiesMock);
+        }
+
+        public async Task DelAsync(City c)
+        {
+            int index = _citiesMock.FindIndex(item => item.Id == c.Id);
+            if(index >= 0)
             {
-                await Task.FromException(ex);
-            } 
-        }
-
-    public Task<IEnumerable<City>> BrowseAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DelAsync(City c)
-        {
-            throw new NotImplementedException();
+                _citiesMock.RemoveAt(index);
+                await Task.CompletedTask;
+            }
         }
 
         public async Task<City> GetAsync(int id)
         {
-            try
+            int index = _citiesMock.FindIndex(item => item.Id == id);
+            if(index >= 0)
             {
-                return await Task.FromResult(_appDbContext.City.FirstOrDefault(x => x.Id == id));
-
+                return await Task.FromResult(_citiesMock[index]);
             }
-            catch (Exception ex)
+            else
             {
-                await Task.FromException(ex);
                 return null;
             }
+
         }
 
         public Task UpdateAsync(City c)
