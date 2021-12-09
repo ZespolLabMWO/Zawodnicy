@@ -9,29 +9,43 @@ namespace Zawodnicy.Infrastructure.Repositories
 {
     class CouchesRepository : ICoachesRepository
     {
-        public Task AddSync(Coach c)
+        public static List<Coach> _CoachMock = new List<Coach>();
+
+        public async Task AddSync(Coach c)
         {
-            throw new NotImplementedException();
+            _CoachMock.Add(c);
+            await Task.CompletedTask;
         }
 
-        public Task<IEnumerable<Coach>> BrowseAllAsync()
+        public async Task<IEnumerable<Coach>> BrowseAllAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_CoachMock);
         }
 
-        public Task DelAsync(Coach c)
+        public async Task DelAsync(Coach c)
         {
-            throw new NotImplementedException();
+            int x = _CoachMock.FindIndex(x => x.Id == c.Id);
+            if(x!=-1)
+            {
+                _CoachMock.RemoveAt(x);
+            }
+            await Task.CompletedTask;
         }
 
-        public Task<Coach> GetAsync(int id)
+        public async Task<Coach> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_CoachMock.Find(x => x.Id == id));
         }
 
-        public Task UpdateAsync(Coach c)
+        public async Task UpdateAsync(Coach c)
         {
-            throw new NotImplementedException();
+            int idx = _CoachMock.FindIndex(x => x.Id == c.Id);
+
+            if (idx != -1)
+            {
+                _CoachMock[idx] = c;
+            }
+            await Task.CompletedTask;
         }
     }
 }
